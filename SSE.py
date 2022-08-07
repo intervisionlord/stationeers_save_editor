@@ -1,12 +1,13 @@
 from datetime import datetime
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMessageBox, QMainWindow
-import xml.etree.ElementTree as ET
+from os import environ, path, listdir
 from shutil import copytree
+import xml.etree.ElementTree as ET
 import time
 import sys
 import gui
-from os import environ, path, listdir
+import yaml
 
 class MainForm(QMainWindow, gui.Ui_mainWindow):
     """Создание графического интерфейса.
@@ -22,6 +23,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         self.savesLabel.setText(self.getPaths()[0])
         self.savesCombo.currentIndexChanged.connect(self.saveChangeSig)
         self.saveButton.clicked.connect(self.rewriteSave)
+        self.statusBar.showMessage(f'v.: {buildInfo()[0]}, by {buildInfo()[1]} ({buildInfo()[2]})')
 
     def getPaths(self) -> list:
         """Определяет основные пути до сохранения.
@@ -30,45 +32,64 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
             list: Список путей c директорией сохранения и до самого файла world.xml
         """
         self.myDocsPath = environ.get('USERPROFILE')
-        self.savesPath = f'{self.myDocsPath}\\Documents\\My Games\\Stationeers\\saves'
-        self.savesFile = f'{self.savesPath}\\{self.savesCombo.currentText()}\\world.xml'
-        return self.savesPath, self.savesFile
+        self.savePath = f'{self.myDocsPath}\\Documents\\My Games\\Stationeers\\saves'
+        self.saveWorld = f'{self.savePath}\\{self.savesCombo.currentText()}\\world.xml'
+        self.saveWorldS = f'{self.savePath}\\{self.savesCombo.currentText()}\\worldsettings.xml'
+        return self.savePath, self.saveWorld, self.saveWorldS
         
 
-    def getXMLRoot(self) -> list:
+    def getXML(self) -> list:
         """Парсит XML конфиг.
 
         Returns:
             list: Список с деревом XML и с корневым элементом
         """
-        xmlTree = ET.parse(self.savesFile)
-        rootNode = xmlTree.getroot()
-        return xmlTree, rootNode
+        worldXMLTree = ET.parse(self.saveWorld)
+        worldRootNode = worldXMLTree.getroot()
+        worldSXMLTree = ET.parse(self.saveWorldS)
+        worldSRootNode = worldSXMLTree.getroot()
+        return worldXMLTree, worldRootNode, worldSXMLTree, worldSRootNode
 
     def saveChangeSig(self):
         """Обработка события смены редактируемого сейва.
         """
         self.dateModifLabel.setText(time.ctime(path.getmtime(self.getPaths()[1])))
-        rootNode = self.getXMLRoot()[1]
-        for element in rootNode:
+        w_rootNode = self.getXML()[1]
+        ws_rootNode = self.getXML()[3]
+        for element in w_rootNode:
             if str(element.tag) == 'ResearchKey':
                 self.researchCombo.setCurrentText(element.text)
             elif str(element.tag) == 'DaysPast':
                 self.daysPastText.setText(element.text)
             elif str(element.tag) == 'WorldName':
                 self.worldNameText.setText(element.text)
+        for element in ws_rootNode:
+            if str(element.tag) == 'Gravity':
+                self.gravityText.setText(element.text)
+            elif str(element.tag) == 'HungerRate':
+                self.hungerRateText.setText(element.text)
+            elif str(element.tag) == 'SolarScale':
+                self.solarScaleText.setText(element.text)
+            elif str(element.tag) == 'RotatingSky':
+                self.rotatingSkyBox.setCurrentText(element.text)
 
     def rewriteSave(self):
         """Обработка сохранения отредактированного сейва.
         """
-        xmlTree = self.getXMLRoot()[0]
-        xmlTree.find('.//ResearchKey').text = self.researchCombo.currentText()
-        xmlTree.find('.//DaysPast').text = self.daysPastText.text()
+        wXMLTree = self.getXML()[0]
+        wXMLTree.find('.//ResearchKey').text = self.researchCombo.currentText()
+        wXMLTree.find('.//DaysPast').text = self.daysPastText.text()
+        wsXMLTree = self.getXML()[2]
+        wsXMLTree.find('.//Gravity').text = self.gravityText()
+        wsXMLTree.find('.//HungerRate').text = self.hungerRateText.text()
+        wsXMLTree.find('.//SolarScale').text = self.solarScaleText.text()
+        wsXMLTree.find('.//RotatingSky').text = self.rotatingSkyBox.currentText()
         dateformat = '%Y_%m_%d_%H_%M_%S'
         if self.backupCheck.isChecked():
             copytree(f'{self.getPaths()[0]}\\{self.savesCombo.currentText()}',
                      f'{self.getPaths()[0]}\\{self.savesCombo.currentText()}_{datetime.now().strftime(dateformat)}')
-        xmlTree.write(f'{self.savesFile}')
+        wXMLTree.write(self.saveWorld)
+        wsXMLTree.write(self.saveWorldS)
         msgbox('Save File modified!')
 
 def msgbox(mText: str):
@@ -83,11 +104,21 @@ def msgbox(mText: str):
     mBox.setIcon(QMessageBox.Information)
     popupWindow = mBox.exec_()
 
+def buildInfo() -> list:
+    """Выводин информацию о версии в статусбаре.
+
+    Returns:
+        list: Список данных о версии и авторе
+    """
+    with open('Builder/config.yaml', 'r') as config:
+        progAbout = yaml.full_load(config)
+    return progAbout['main']['version'], progAbout['main']['author'], progAbout['main']['authorlink']
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     form = MainForm()
     form.show()
-    for i in (listdir(form.savesPath)):
-        if path.isdir(f'{form.savesPath}\\{i}'):
+    for i in (listdir(form.savePath)):
+        if path.isdir(f'{form.savePath}\\{i}'):
             form.savesCombo.addItem(str(i))
     app.exec()

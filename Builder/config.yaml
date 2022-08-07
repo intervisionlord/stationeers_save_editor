@@ -1,5 +1,5 @@
 main:
-  version: '0.0.1.4'
+  version: '0.1.0.0'
   author: 'intervision'
   authorlink: 'https://github.com/intervisionlord'
   icon: '../imgs/SSE_Icon.png'
