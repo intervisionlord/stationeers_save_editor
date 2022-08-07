@@ -4,9 +4,9 @@
 
 <br>
 
-<img src = "https://img.shields.io/github/downloads/intervisionlord/stationeers_save_editor/total">
-<img src = "https://img.shields.io/github/license/intervisionlord/stationeers_save_editor">
-<img src = "https://img.shields.io/tokei/lines/github/intervisionlord/stationeers_save_editor">
+![](https://img.shields.io/github/downloads/intervisionlord/stationeers_save_editor/total)
+![](https://img.shields.io/github/license/intervisionlord/stationeers_save_editor)
+![](https://img.shields.io/tokei/lines/github/intervisionlord/stationeers_save_editor)
 
 # Stationeers Save Editor
 ## Описание
