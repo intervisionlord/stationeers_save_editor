@@ -10,7 +10,7 @@ def getconfig() -> dict:
     """
     try:
         with open('./config.yaml', 'r') as confFile:
-            conf = yaml.full_load(confFile)
+            conf: dict = yaml.full_load(confFile)
     except FileNotFoundError:
         print('File not found')
     return conf
