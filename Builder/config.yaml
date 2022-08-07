@@ -1,0 +1,13 @@
+main:
+  version: '0.0.1.0'
+  author: 'intervision'
+  authorlink: 'https://github.com/intervisionlord'
+  icon: '../imgs/SSE_Icon.png'
+
+plugins: qt-plugins
+
+params:
+  - windows-disable-console
+  - onefile
+  - standalone
+  - remove-output
