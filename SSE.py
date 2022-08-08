@@ -1,14 +1,13 @@
-from datetime import datetime
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QMessageBox, QMainWindow
+from yaml import full_load as loadyaml
 from os import environ, path, listdir
+from datetime import datetime
 from shutil import copytree
+from time import ctime as tCtime
 import xml.etree.ElementTree as ET
-import time
 import sys
 import gui
-from yaml import full_load as loadyaml
 
 class MainForm(QMainWindow, gui.Ui_mainWindow):
     """Создание графического интерфейса.
@@ -17,11 +16,11 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         QMainWindow: Главное окно программы
         gui: Конфигурация окна
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
         self.setWindowIcon(QIcon('imgs/SSE_icon.ico'))
-        self.saveButton.setIcon(QIcon('imgs/save_icon_48.png'))
+        self.saveButton.setIcon(QIcon('imgs/save_icon_16.ico'))
         self.savesLabel.setText(self.getPaths()[0])
         self.savesCombo.currentIndexChanged.connect(self.saveChangeSig)
         self.saveButton.clicked.connect(self.rewriteSave)
@@ -52,12 +51,21 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         worldSRootNode = worldSXMLTree.getroot()
         return worldXMLTree, worldRootNode, worldSXMLTree, worldSRootNode
 
-    def saveChangeSig(self):
+    def saveChangeSig(self) -> None:
         """Обработка события смены редактируемого сейва.
         """
-        self.dateModifLabel.setText(time.ctime(path.getmtime(self.getPaths()[1])))
+        self.dateModifLabel.setText(tCtime(path.getmtime(self.getPaths()[1])))
         w_rootNode = self.getXML()[1]
         ws_rootNode = self.getXML()[3]
+        self.fillwRoot(w_rootNode)
+        self.fillwsRoot(ws_rootNode)
+
+    def fillwRoot(self, w_rootNode) -> None:
+        """Заполняет дерево world.xml
+
+        Args:
+            w_rootNode: Корневой список XML
+        """
         for element in w_rootNode:
             if str(element.tag) == 'ResearchKey':
                 self.researchCombo.setCurrentText(element.text)
@@ -65,6 +73,13 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
                 self.daysPastText.setText(element.text)
             elif str(element.tag) == 'WorldName':
                 self.worldNameText.setText(element.text)
+
+    def fillwsRoot(self, ws_rootNode) -> None:
+        """Заполняет дерево worldsettings.xml
+
+        Args:
+            ws_rootNode: Корневой список XML
+        """
         for element in ws_rootNode:
             if str(element.tag) == 'Gravity':
                 self.gravityText.setText(element.text)
@@ -75,14 +90,15 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
             elif str(element.tag) == 'RotatingSky':
                 self.rotatingSkyBox.setCurrentText(element.text)
 
-    def rewriteSave(self):
+    def rewriteSave(self) -> None:
         """Обработка сохранения отредактированного сейва.
         """
         wXMLTree = self.getXML()[0]
         wXMLTree.find('.//ResearchKey').text = self.researchCombo.currentText()
         wXMLTree.find('.//DaysPast').text = self.daysPastText.text()
+        wXMLTree.find('.//WorldName').text = self.worldNameText.text()
         wsXMLTree = self.getXML()[2]
-        wsXMLTree.find('.//Gravity').text = self.gravityText()
+        wsXMLTree.find('.//Gravity').text = self.gravityText.text()
         wsXMLTree.find('.//HungerRate').text = self.hungerRateText.text()
         wsXMLTree.find('.//SolarScale').text = self.solarScaleText.text()
         wsXMLTree.find('.//RotatingSky').text = self.rotatingSkyBox.currentText()
@@ -94,7 +110,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         wsXMLTree.write(self.saveWorldS)
         msgbox('Save File modified!')
 
-def msgbox(mText: str):
+def msgbox(mText: str) -> None:
     """Вызывает информационное окно с результатом операции.
 
     Args:
@@ -104,10 +120,10 @@ def msgbox(mText: str):
     mBox.setWindowTitle('Info')
     mBox.setText(mText)
     mBox.setIcon(QMessageBox.Information)
-    popupWindow = mBox.exec_()
+    mBox.exec_()
 
 def buildInfo() -> list:
-    """Выводин информацию о версии в статусбаре.
+    """Выводит информацию о версии в статусбаре.
 
     Returns:
         list: Список данных о версии и авторе

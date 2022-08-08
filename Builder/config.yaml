@@ -1,5 +1,5 @@
 main:
-  version: '0.1.2.1'
+  version: '0.1.2.6'
   author: 'intervision'
   authorlink: 'https://github.com/intervisionlord'
   icon: '../imgs/SSE_Icon.ico'
@@ -12,7 +12,11 @@ params:
   - onefile
   - standalone
   - remove-output
+  - windows-product-name="Stationeers Save Editor"
+  - windows-company-name="TWR"
+  - windows-product-version
+  - windows-file-description="Save editor for Stationeers game"
 
 files:
-  - imgs/save_icon_48.png
+  - imgs/save_icon_16.ico
   - imgs/SSE_Icon.ico

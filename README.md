@@ -4,6 +4,7 @@
 
 <br>
 
+![](https://img.shields.io/github/v/release/intervisionlord/stationeers_save_editor)
 ![](https://img.shields.io/github/downloads/intervisionlord/stationeers_save_editor/total)
 ![](https://img.shields.io/github/license/intervisionlord/stationeers_save_editor)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/intervisionlord/stationeers_save_editor/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
@@ -12,7 +13,7 @@
 # Stationeers Save Editor
 - [Stationeers Save Editor](#stationeers-save-editor)
   - [Описание](#описание)
-    - [Версия 0.1.2.1](#версия-0121)
+  - [Последняя верия](#последняя-верия)
   - [Интерфейс](#интерфейс)
 
 ## Описание
@@ -20,9 +21,8 @@
 
 На данный момент можно поменять только некоторые значения в сейве.
 
-### Версия 0.1.2.1
- * Использует PyQT5
- * Собирается через nuitka
+## Последняя верия
+  * [**Stationeers Save Editor**](https://github.com/intervisionlord/stationeers_save_editor/releases/latest) <sup>latest<sup>
 
 ## Интерфейс
 <p align = "center">
