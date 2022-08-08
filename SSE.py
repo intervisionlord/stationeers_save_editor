@@ -4,8 +4,8 @@ from yaml import full_load as loadyaml
 from os import environ, path, listdir
 from datetime import datetime
 from shutil import copytree
+from time import ctime as tCtime
 import xml.etree.ElementTree as ET
-import time
 import sys
 import gui
 
@@ -54,7 +54,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
     def saveChangeSig(self):
         """Обработка события смены редактируемого сейва.
         """
-        self.dateModifLabel.setText(time.ctime(path.getmtime(self.getPaths()[1])))
+        self.dateModifLabel.setText(tCtime(path.getmtime(self.getPaths()[1])))
         w_rootNode = self.getXML()[1]
         ws_rootNode = self.getXML()[3]
         for element in w_rootNode:

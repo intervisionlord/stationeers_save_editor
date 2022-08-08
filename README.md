@@ -4,6 +4,7 @@
 
 <br>
 
+![](https://img.shields.io/github/v/release/intervisionlord/stationeers_save_editor)
 ![](https://img.shields.io/github/downloads/intervisionlord/stationeers_save_editor/total)
 ![](https://img.shields.io/github/license/intervisionlord/stationeers_save_editor)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/intervisionlord/stationeers_save_editor/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
@@ -21,7 +22,7 @@
 На данный момент можно поменять только некоторые значения в сейве.
 
 ## Последняя верия
-  * [SSE-0.1.2.1](https://github.com/intervisionlord/stationeers_save_editor/releases/latest)
+  * [**Stationeers Save Editor**](https://github.com/intervisionlord/stationeers_save_editor/releases/latest) <sup>latest<sup>
 
 ## Интерфейс
 <p align = "center">
