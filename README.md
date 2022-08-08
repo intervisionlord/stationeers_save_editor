@@ -12,7 +12,7 @@
 # Stationeers Save Editor
 - [Stationeers Save Editor](#stationeers-save-editor)
   - [Описание](#описание)
-    - [Версия 0.1.2.1](#версия-0121)
+  - [Последняя верия](#последняя-верия)
   - [Интерфейс](#интерфейс)
 
 ## Описание
@@ -20,9 +20,8 @@
 
 На данный момент можно поменять только некоторые значения в сейве.
 
-### Версия 0.1.2.1
- * Использует PyQT5
- * Собирается через nuitka
+## Последняя верия
+  * [SSE-0.1.2.1](https://github.com/intervisionlord/stationeers_save_editor/releases/latest)
 
 ## Интерфейс
 <p align = "center">

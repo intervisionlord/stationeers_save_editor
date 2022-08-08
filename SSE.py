@@ -1,14 +1,13 @@
-from datetime import datetime
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QMessageBox, QMainWindow
+from yaml import full_load as loadyaml
 from os import environ, path, listdir
+from datetime import datetime
 from shutil import copytree
 import xml.etree.ElementTree as ET
 import time
 import sys
 import gui
-from yaml import full_load as loadyaml
 
 class MainForm(QMainWindow, gui.Ui_mainWindow):
     """Создание графического интерфейса.
@@ -82,7 +81,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         wXMLTree.find('.//ResearchKey').text = self.researchCombo.currentText()
         wXMLTree.find('.//DaysPast').text = self.daysPastText.text()
         wsXMLTree = self.getXML()[2]
-        wsXMLTree.find('.//Gravity').text = self.gravityText()
+        wsXMLTree.find('.//Gravity').text = self.gravityText.text()
         wsXMLTree.find('.//HungerRate').text = self.hungerRateText.text()
         wsXMLTree.find('.//SolarScale').text = self.solarScaleText.text()
         wsXMLTree.find('.//RotatingSky').text = self.rotatingSkyBox.currentText()
@@ -104,10 +103,10 @@ def msgbox(mText: str):
     mBox.setWindowTitle('Info')
     mBox.setText(mText)
     mBox.setIcon(QMessageBox.Information)
-    popupWindow = mBox.exec_()
+    mBox.exec_()
 
 def buildInfo() -> list:
-    """Выводин информацию о версии в статусбаре.
+    """Выводит информацию о версии в статусбаре.
 
     Returns:
         list: Список данных о версии и авторе
