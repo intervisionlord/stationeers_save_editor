@@ -16,7 +16,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         QMainWindow: Главное окно программы
         gui: Конфигурация окна
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
         self.setWindowIcon(QIcon('imgs/SSE_icon.ico'))
@@ -51,12 +51,21 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         worldSRootNode = worldSXMLTree.getroot()
         return worldXMLTree, worldRootNode, worldSXMLTree, worldSRootNode
 
-    def saveChangeSig(self):
+    def saveChangeSig(self) -> None:
         """Обработка события смены редактируемого сейва.
         """
         self.dateModifLabel.setText(tCtime(path.getmtime(self.getPaths()[1])))
         w_rootNode = self.getXML()[1]
         ws_rootNode = self.getXML()[3]
+        self.fillwRoot(w_rootNode)
+        self.fillwsRoot(ws_rootNode)
+
+    def fillwRoot(self, w_rootNode) -> None:
+        """Заполняет дерево world.xml
+
+        Args:
+            w_rootNode: Корневой список XML
+        """
         for element in w_rootNode:
             if str(element.tag) == 'ResearchKey':
                 self.researchCombo.setCurrentText(element.text)
@@ -64,6 +73,13 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
                 self.daysPastText.setText(element.text)
             elif str(element.tag) == 'WorldName':
                 self.worldNameText.setText(element.text)
+
+    def fillwsRoot(self, ws_rootNode) -> None:
+        """Заполняет дерево worldsettings.xml
+
+        Args:
+            ws_rootNode: Корневой список XML
+        """
         for element in ws_rootNode:
             if str(element.tag) == 'Gravity':
                 self.gravityText.setText(element.text)
@@ -74,12 +90,13 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
             elif str(element.tag) == 'RotatingSky':
                 self.rotatingSkyBox.setCurrentText(element.text)
 
-    def rewriteSave(self):
+    def rewriteSave(self) -> None:
         """Обработка сохранения отредактированного сейва.
         """
         wXMLTree = self.getXML()[0]
         wXMLTree.find('.//ResearchKey').text = self.researchCombo.currentText()
         wXMLTree.find('.//DaysPast').text = self.daysPastText.text()
+        wXMLTree.find('.//WorldName').text = self.worldNameText.text()
         wsXMLTree = self.getXML()[2]
         wsXMLTree.find('.//Gravity').text = self.gravityText.text()
         wsXMLTree.find('.//HungerRate').text = self.hungerRateText.text()
@@ -93,7 +110,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         wsXMLTree.write(self.saveWorldS)
         msgbox('Save File modified!')
 
-def msgbox(mText: str):
+def msgbox(mText: str) -> None:
     """Вызывает информационное окно с результатом операции.
 
     Args:
