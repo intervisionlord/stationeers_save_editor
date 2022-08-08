@@ -1,13 +1,18 @@
 main:
-  version: '0.1.0.0'
+  version: '0.1.2.1'
   author: 'intervision'
   authorlink: 'https://github.com/intervisionlord'
-  icon: '../imgs/SSE_Icon.png'
+  icon: '../imgs/SSE_Icon.ico'
 
-plugins: qt-plugins
+plugins: pyqt5
 
 params:
   - windows-disable-console
+  - follow-imports
   - onefile
   - standalone
   - remove-output
+
+files:
+  - imgs/save_icon_48.png
+  - imgs/SSE_Icon.ico

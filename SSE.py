@@ -1,5 +1,6 @@
 from datetime import datetime
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QMessageBox, QMainWindow
 from os import environ, path, listdir
 from shutil import copytree
@@ -7,7 +8,7 @@ import xml.etree.ElementTree as ET
 import time
 import sys
 import gui
-import yaml
+from yaml import full_load as loadyaml
 
 class MainForm(QMainWindow, gui.Ui_mainWindow):
     """Создание графического интерфейса.
@@ -19,7 +20,8 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowIcon(QIcon('imgs/SSE_icon.png'))
+        self.setWindowIcon(QIcon('imgs/SSE_icon.ico'))
+        self.saveButton.setIcon(QIcon('imgs/save_icon_48.png'))
         self.savesLabel.setText(self.getPaths()[0])
         self.savesCombo.currentIndexChanged.connect(self.saveChangeSig)
         self.saveButton.clicked.connect(self.rewriteSave)
@@ -110,8 +112,8 @@ def buildInfo() -> list:
     Returns:
         list: Список данных о версии и авторе
     """
-    with open('Builder/config.yaml', 'r') as config:
-        progAbout = yaml.full_load(config)
+    with open('config.yaml', 'r') as config:
+        progAbout = loadyaml(config)
     return progAbout['main']['version'], progAbout['main']['author'], progAbout['main']['authorlink']
 
 if __name__ == '__main__':
