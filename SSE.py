@@ -20,7 +20,7 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
         super().__init__()
         self.setupUi(self)
         self.setWindowIcon(QIcon('imgs/SSE_icon.ico'))
-        self.saveButton.setIcon(QIcon('imgs/save_icon_48.png'))
+        self.saveButton.setIcon(QIcon('imgs/save_icon_16.ico'))
         self.savesLabel.setText(self.getPaths()[0])
         self.savesCombo.currentIndexChanged.connect(self.saveChangeSig)
         self.saveButton.clicked.connect(self.rewriteSave)
