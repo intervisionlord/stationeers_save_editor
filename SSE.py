@@ -19,8 +19,8 @@ class MainForm(QMainWindow, gui.Ui_mainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
-        self.setWindowIcon(QIcon('imgs/SSE_icon.ico'))
-        self.saveButton.setIcon(QIcon('imgs/save_icon_16.ico'))
+        self.setWindowIcon(QIcon(path.join(path.dirname(__file__), 'imgs/SSE_icon.ico')))
+        self.saveButton.setIcon(QIcon(path.join(path.dirname(__file__), 'imgs/save_icon_16.ico')))
         self.savesLabel.setText(self.getPaths()[0])
         self.savesCombo.currentIndexChanged.connect(self.saveChangeSig)
         self.saveButton.clicked.connect(self.rewriteSave)
@@ -128,7 +128,7 @@ def buildInfo() -> list:
     Returns:
         list: Список данных о версии и авторе
     """
-    with open('config.yaml', 'r') as config:
+    with open(path.join(path.dirname(__file__), 'config.yaml'), 'r') as config:
         progAbout = loadyaml(config)
     return progAbout['main']['version'], progAbout['main']['author'], progAbout['main']['authorlink']
 
